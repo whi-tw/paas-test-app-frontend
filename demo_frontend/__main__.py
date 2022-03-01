@@ -1,6 +1,6 @@
 import os
 import requests
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Resource, Api
 
 app = Flask(__name__)
@@ -24,7 +24,7 @@ class GetTables(Resource):
 @api.resource("/")
 class HelloWorld(Resource):
     def get(self):
-        return {"hello": "world", "service": "frontend"}
+        return {"hello": "world", "service": "frontend", "caller": request.remote_addr}
 
 
 if __name__ == "__main__":
