@@ -8,14 +8,15 @@ api = Api(app)
 
 PORT = os.getenv("PORT", 5000)
 DEBUG = os.getenv("DEBUG", "false")
-BACKEND_FQDN = "https://gds-paas-demo-backend.herokuapp.com"
+BACKEND_URL = os.getenv("BACKEND_URL", None)
+assert BACKEND_URL is not None, "BACKEND_URL not set"
 
 
 @api.resource("/tables")
 class GetTables(Resource):
     def get(self):
         try:
-            r = requests.get(f"{BACKEND_FQDN}/tables")
+            r = requests.get(f"{BACKEND_URL}/tables")
             return r.json()
         except Exception as e:
             return {"error": "it failed.", "details": str(e)}
