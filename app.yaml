@@ -1,0 +1,5 @@
+runtime: python39
+entrypoint: python3 -m demo_frontend
+env_variables:
+  BACKEND_URL: https://backend-dot-paas-test-app-thing.ew.r.appspot.com
+  DEBUG: yes
